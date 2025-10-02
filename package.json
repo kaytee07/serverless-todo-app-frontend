@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm install && vite build",
     "preview": "vite preview",
     "validate-env": "node -e \"import('dotenv').then(dotenv => { dotenv.config(); const required = ['VITE_COGNITO_USER_POOL_ID', 'VITE_COGNITO_CLIENT_ID']; const missing = required.filter(key => !process.env[key]); if (missing.length > 0) { console.error('❌ Missing environment variables:', missing); process.exit(1); } else { console.log('✅ All environment variables are set'); } })\""
   },
@@ -19,7 +19,5 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",
     "vite": "^4.3.0"
-  },  "scripts": {
-  "build": "npm install && vite build"
-}
+  }
 }
