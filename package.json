@@ -9,15 +9,20 @@
     "validate-env": "node -e \"import('dotenv').then(dotenv => { dotenv.config(); const required = ['VITE_COGNITO_USER_POOL_ID', 'VITE_COGNITO_CLIENT_ID']; const missing = required.filter(key => !process.env[key]); if (missing.length > 0) { console.error('❌ Missing environment variables:', missing); process.exit(1); } else { console.log('✅ All environment variables are set'); } })\""
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.14",
+    "aws-amplify": "^5.3.0",
+    "lucide-react": "^0.263.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.8.0",
-    "aws-amplify": "^5.3.0",
     "react-hot-toast": "^2.4.0",
-    "lucide-react": "^0.263.1"
+    "react-router-dom": "^6.8.0"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.1.14",
     "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.14",
     "vite": "^4.3.0"
   }
 }

@@ -1,10 +1,4 @@
-import { Amplify } from 'aws-amplify';
-import { 
-  getCurrentUser, 
-  signIn, 
-  signOut, 
-  fetchAuthSession 
-} from 'aws-amplify/auth';
+import { Amplify, Auth } from 'aws-amplify';
 import { COGNITO_CONFIG, validateEnv } from '../utils/constants';
 
 // Validate environment variables on import
@@ -15,11 +9,10 @@ if (!validateEnv()) {
 // Configure Amplify with environment variables
 const amplifyConfig = {
   Auth: {
-    Cognito: {
-      userPoolId: COGNITO_CONFIG.userPoolId,
-      userPoolClientId: COGNITO_CONFIG.userPoolClientId,
-      region: COGNITO_CONFIG.region
-    }
+    // Correct structure for Amplify v5
+    region: COGNITO_CONFIG.region,
+    userPoolId: COGNITO_CONFIG.userPoolId,
+    userPoolWebClientId: COGNITO_CONFIG.userPoolClientId,
   }
 };
 
@@ -43,11 +36,8 @@ export class AuthService {
         throw new Error('Authentication service is not properly configured');
       }
 
-      const { isSignedIn, nextStep } = await signIn({ 
-        username, 
-        password 
-      });
-      return { success: true, user: await getCurrentUser() };
+      const user = await Auth.signIn(username, password);
+      return { success: true, user };
     } catch (error) {
       console.error('Login error:', error);
       throw new Error(error.message || 'Login failed');
@@ -56,7 +46,7 @@ export class AuthService {
 
   static async logout() {
     try {
-      await signOut();
+      await Auth.signOut();
       return { success: true };
     } catch (error) {
       console.error('Logout error:', error);
@@ -66,8 +56,8 @@ export class AuthService {
 
   static async getCurrentSession() {
     try {
-      const session = await fetchAuthSession();
-      return session.tokens.idToken;
+      const session = await Auth.currentSession();
+      return session.getIdToken().getJwtToken();
     } catch (error) {
       console.error('Get session error:', error);
       return null;
@@ -76,7 +66,7 @@ export class AuthService {
 
   static async getCurrentUser() {
     try {
-      return await getCurrentUser();
+      return await Auth.currentAuthenticatedUser();
     } catch (error) {
       console.error('Get current user error:', error);
       return null;

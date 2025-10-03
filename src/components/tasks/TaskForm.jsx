@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { X, Calendar } from 'lucide-react';
+import { TASK_STATUS } from '../../utils/constants';
 
 const TaskForm = ({ onSubmit, onCancel, initialData = {}, isEditing = false }) => {
   const [formData, setFormData] = useState({
     description: initialData.description || '',
     deadline: initialData.deadline ? formatDateForInput(initialData.deadline) : '',
-    status: initialData.status || 'Pending'
+    status: initialData.status || TASK_STATUS.PENDING
   });
   const [loading, setLoading] = useState(false);
 
@@ -38,15 +39,15 @@ const TaskForm = ({ onSubmit, onCancel, initialData = {}, isEditing = false }) =
     setLoading(false);
     
     if (!isEditing) {
-      setFormData({ description: '', deadline: '', status: 'Pending' });
+      setFormData({ description: '', deadline: '', status: TASK_STATUS.PENDING });
     }
   };
 
   const statusOptions = [
-    { value: 'Pending', label: 'Pending', color: 'bg-yellow-100 text-yellow-800' },
-    { value: 'Completed', label: 'Completed', color: 'bg-green-100 text-green-800' },
-    { value: 'Expired', label: 'Expired', color: 'bg-red-100 text-red-800' },
-    { value: 'Deleted', label: 'Deleted', color: 'bg-gray-100 text-gray-800' }
+    { value: TASK_STATUS.PENDING, label: 'Pending', color: 'bg-yellow-100 text-yellow-800' },
+    { value: TASK_STATUS.COMPLETED, label: 'Completed', color: 'bg-green-100 text-green-800' },
+    { value: TASK_STATUS.EXPIRY, label: 'Expired', color: 'bg-red-100 text-red-800' },
+    { value: TASK_STATUS.DELETED, label: 'Deleted', color: 'bg-gray-100 text-gray-800' }
   ];
 
   return (
@@ -78,6 +79,7 @@ const TaskForm = ({ onSubmit, onCancel, initialData = {}, isEditing = false }) =
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
               placeholder="What needs to be done?"
+              maxLength="500"
             />
             <p className="text-xs text-gray-500 mt-1">
               {formData.description.length}/500 characters
@@ -127,7 +129,7 @@ const TaskForm = ({ onSubmit, onCancel, initialData = {}, isEditing = false }) =
           {!isEditing && (
             <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
               <p className="text-sm text-blue-800">
-                <strong>Note:</strong> New tasks will be created with "Pending" status. 
+                <strong>Note:</strong> New tasks will be created with "PENDING" status. 
                 You can change the status when editing the task.
               </p>
             </div>

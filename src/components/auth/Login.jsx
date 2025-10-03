@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { LogIn, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { AuthService } from '../../services/auth';
 
 const Login = () => {
@@ -10,6 +11,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [configError, setConfigError] = useState(false);
   const { login } = useAuth();
+  const navigate = useNavigate()
 
   useEffect(() => {
     // Check if auth is properly configured
@@ -34,6 +36,7 @@ const Login = () => {
       alert(result.error);
     }
     
+    navigate("/tasks")
     setLoading(false);
   };
 
