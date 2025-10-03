@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom'; // ADD Link import
 import { useAuth } from '../../contexts/AuthContext';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { LogIn, AlertCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { AuthService } from '../../services/auth';
 
 const Login = () => {
@@ -11,7 +11,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [configError, setConfigError] = useState(false);
   const { login } = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if auth is properly configured
@@ -32,11 +32,12 @@ const Login = () => {
 
     const result = await login(username, password);
     
-    if (!result.success) {
+    if (result.success) {
+      navigate('/tasks');
+    } else {
       alert(result.error);
     }
     
-    navigate("/tasks")
     setLoading(false);
   };
 
@@ -79,6 +80,16 @@ const Login = () => {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sign in to your account
           </h2>
+          {/* ADD THIS SIGN-UP LINK */}
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Don't have an account?{' '}
+            <Link
+              to="/signup"
+              className="font-medium text-blue-600 hover:text-blue-500"
+            >
+              Sign up here
+            </Link>
+          </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">

@@ -77,4 +77,53 @@ export class AuthService {
   static isConfigured() {
     return !!(COGNITO_CONFIG.userPoolId && COGNITO_CONFIG.userPoolClientId);
   }
+  
+  static async signUp(username, password, email, attributes = {}) {
+    try {
+      // Check if Amplify is properly configured
+      if (!COGNITO_CONFIG.userPoolId || !COGNITO_CONFIG.userPoolClientId) {
+        throw new Error('Authentication service is not properly configured');
+      }
+
+      const result = await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          email,
+          ...attributes
+        }
+      });
+
+      return { 
+        success: true, 
+        user: result.user,
+        userConfirmed: result.userConfirmed,
+        codeDeliveryDetails: result.codeDeliveryDetails
+      };
+    } catch (error) {
+      console.error('Sign up error:', error);
+      throw new Error(error.message || 'Sign up failed');
+    }
+  }
+
+  static async confirmSignUp(username, code) {
+    try {
+      await Auth.confirmSignUp(username, code);
+      return { success: true };
+    } catch (error) {
+      console.error('Confirm sign up error:', error);
+      throw new Error(error.message || 'Confirmation failed');
+    }
+  }
+
+  static async resendSignUpCode(username) {
+    try {
+      await Auth.resendSignUpCode(username);
+      return { success: true };
+    } catch (error) {
+      console.error('Resend code error:', error);
+      throw new Error(error.message || 'Failed to resend code');
+    }
+  }
+
 }

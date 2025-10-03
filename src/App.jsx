@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'react-hot-toast';
 import { useAuth } from './contexts/AuthContext';
 import Login from './components/auth/Login';
+import SignUp from './components/auth/SignUp'; // ADD THIS IMPORT
 import TaskList from './components/tasks/TaskList';
 import Header from './components/common/Header';
 import LoadingSpinner from './components/common/LoadingSpinner';
@@ -34,6 +35,7 @@ function AppContent() {
       ) : (
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} /> {/* ADD THIS LINE */}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       )}
