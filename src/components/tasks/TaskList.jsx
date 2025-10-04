@@ -230,7 +230,7 @@ const TaskList = () => {
 
       {editingTask && (
         <TaskForm
-          onSubmit={(taskData) => handleUpdateTask(editingTask.id, taskData)}
+          onSubmit={(taskData) => handleUpdateTask(editingTask.taskId, taskData)}
           onCancel={() => setEditingTask(null)}
           initialData={editingTask}
           isEditing={true}
@@ -261,7 +261,7 @@ const TaskList = () => {
         ) : (
           filteredTasks().map(task => (
             <TaskItem
-              key={task.id}
+              key={task.taskId}
               task={task}
               onEdit={handleEditTask}
               onDelete={deleteTask}

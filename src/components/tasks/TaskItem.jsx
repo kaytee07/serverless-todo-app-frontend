@@ -8,14 +8,14 @@ const TaskItem = ({ task, onEdit, onDelete, onUpdate }) => {
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this task?')) {
       setIsDeleting(true);
-      await onDelete(task.id);
+      await onDelete(task.taskId);
       setIsDeleting(false);
     }
   };
 
   const handleStatusToggle = async () => {
     const newStatus = task.status === TASK_STATUS.COMPLETED ? TASK_STATUS.PENDING : TASK_STATUS.COMPLETED;
-    await onUpdate(task.id, { 
+    await onUpdate(task.taskId, { 
       description: task.description,
       deadline: task.deadline,
       status: newStatus

@@ -46,7 +46,7 @@ export const useTasks = () => {
       // Backend returns the updated task in response.data
       const updatedTask = response.data;
       setTasks(prev => prev.map(task => 
-        task.id === taskId ? updatedTask : task
+        task.taskId === taskId ? updatedTask : task
       ));
       toast.success(response.message || 'Task updated successfully!');
       return { success: true, task: updatedTask };
@@ -60,7 +60,7 @@ export const useTasks = () => {
     setError(null);
     try {
       await taskAPI.delete(taskId);
-      setTasks(prev => prev.filter(task => task.id !== taskId));
+      setTasks(prev => prev.filter(task => task.taskId !== taskId));
       toast.success('Task deleted successfully!');
       return { success: true };
     } catch (error) {
